@@ -1,3 +1,6 @@
 spring:
   application:
     name: cloudIaas
+
+server:
+  port: 8000
