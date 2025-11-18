@@ -1,4 +1,4 @@
-package com.cloudIaas.cloudIaas.model;
+package com.cloudIaas.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

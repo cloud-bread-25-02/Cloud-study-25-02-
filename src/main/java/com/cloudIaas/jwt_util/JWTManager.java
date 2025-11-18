@@ -1,4 +1,4 @@
-package com.cloudIaas.cloudIaas.jwt_util;
+package com.cloudIaas.jwt_util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -6,11 +6,13 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
+@Service
 public class JWTManager {
     
     // JWT 서명에 사용할 고정된 비밀 키

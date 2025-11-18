@@ -1,4 +1,4 @@
-package com.cloudIaas.cloudIaas.domain;
+package com.cloudIaas.domain;
 
 import lombok.Getter;
 import lombok.Setter;

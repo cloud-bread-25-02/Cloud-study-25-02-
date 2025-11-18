@@ -1,4 +1,4 @@
-package com.cloudIaas.cloudIaas.controller;
+package com.cloudIaas.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
