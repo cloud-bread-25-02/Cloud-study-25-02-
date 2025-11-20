@@ -1,45 +1,52 @@
-# KPSC DLPC
+# ☁️ CloudBread – 웹 기반 IaaS 미니 서비스
 
-**KPSC DLPC**는 KPSC(Kookmin Problem Solved Club) 소속원을 위한 웹 기반 VM 관리 시스템입니다.  
-사용자는 도커 컨테이너 기반의 개인 전용 VM을 신청하고 사용할 수 있으며, 관리자는 이를 승인 및 제어할 수 있습니다.  
-이 프로젝트는 **Spring Boot**, **MySQL**, **Docker**, **JWT 인증** 기반으로 개발되었습니다.
-
----
+CloudBread는 학습 목적의 IaaS(Infra as a Service) 미니 플랫폼입니다.  
+사용자는 개인 전용 VM(실제로는 Docker 컨테이너)을 생성하고 활용할 수 있으며, 관리자는 이를 승인하고 제어할 수 있는 시스템을 Spring Boot · MySQL · Docker · JWT 인증 기반으로 개발했습니다.
 
 ## 📌 개발 목적
 
-- **워게임 스터디원들의 모의해킹 실습**을 위한 안전하고 독립적인 VM 환경 제공  
-- **인공지능을 공부하는 학우들을 위한 GPU 자원 분배 및 사용 관리**  
-- 사용자 인증, 컨테이너 상태 관리, 리소스 할당을 효율적으로 처리할 수 있는 시스템 구현
+- 학부 수준에서 IaaS 구조를 직접 구현하며 클라우드 기본 구조 이해  
+- 사용자 인증, VM 생성, 모니터링 등 **IaaS 핵심 구성요소 실습**  
+- 네트워크와 보안 개념을 실 서비스에 반영해보는 경험 제공  
+- Docker 기반 VM 생성 자동화를 통해 **컨테이너 기반 IaaS 운영 방식 학습**
 
----
+## 🌥️ 주차별 학습 계획
+
+| 주차 | 학습 내용 |
+|------|-----------|
+| **1주차** | 클라우드 서비스 모델(IaaS, PaaS, SaaS) 이해 및 IaaS 구조 개념 습득 |
+| **2주차** | 가상화 기술과 컨테이너 개념 이해 |
+| **3주차** | IaaS에 필요한 네트워크/스토리지 개념 학습 |
+| **4주차** | 클라우드 인증과 보안 개념 이해 |
+| **5주차** | IaaS 핵심 기능인 VM 생성 기능 초안 구현 |
+| **6주차** | JWT 기반 사용자 인증 및 토큰 기반 VM 접속 인증 구현 |
+| **7주차** | VM 상태 모니터링 기능 구현 시작 |
+| **8주차** | 실시간 모니터링 및 관리자 권한 기능 추가 |
+| **9주차** | IaaS 미니 버전 완성 및 시연 |
 
 ## 🔧 주요 기능
 
-- **사용자 등록 및 승인 요청**  
-  사용자가 이름, 학번, 학과, 전화번호를 입력하여 계정 요청을 할 수 있습니다. 관리자는 요청을 승인 또는 거절할 수 있습니다.  
-  → `/register`, `/admin/requests`
+### 1) 사용자 인증 (JWT 기반)  
+- 회원가입 및 로그인  
+- JWT 토큰 기반 API 보호  
+- 일반 사용자 / 관리자 권한 구분  
 
-- **API Key 발급**  
-  승인된 사용자에게는 고유한 API Key가 발급되며, 이를 통해 개인 VM에 접속할 수 있습니다.  
-  → `/vm`
+### 2) VM(Docker 컨테이너) 생성  
+- 사용자가 직접 VM 생성 요청 가능  
+- 컨테이너 이미지 기반 개인 VM 자동 생성  
+- 내부 포트 ↔ 외부 포트 매핑 자동 처리(포트 충돌 방지 포함)  
 
-- **도커 기반 VM 관리**  
-  관리자는 각 사용자에 대해 도커 컨테이너를 생성, 실행, 중지, 로그 확인 및 삭제할 수 있습니다.  
-  → `/admin/vmlogs`
+### 3) VM 관리 및 모니터링  
+- VM 상태 조회 (실행 중 / 중지 / 에러)  
+- 컨테이너 로그 확인  
+- 관리자 페이지에서 전체 VM 조회 가능  
 
-- **관리자 페이지**  
-  계정 요청, 사용자 목록, VM 상태를 직관적으로 관리할 수 있는 웹 인터페이스를 제공합니다.  
-  → `/admin`, `/admin/users`
-
-- **JWT 기반 인증**  
-  사용자 인증 및 API 보호를 위해 JWT(JSON Web Token)를 사용합니다.
-
----
+### 4) 관리자 기능  
+- 사용자 목록 관리  
+- VM 생성/중지/삭제 제어  
+- 실시간 모니터링 (WebSocket 또는 Polling 방식)  
 
 ## 📁 프로젝트 구조
-
-```
 kpsc_wargame/
 └─ kpsc_war_game_study_vm/
     └─ kpsc_wargame/
@@ -51,101 +58,9 @@ kpsc_wargame/
         │   │        └─ application.yml                 # 설정 파일
         ├─ build/
         └─ ...
-```
 
----
 
-## ⚙️ 환경 설정 (`application.yml`)
+###기여
 
-```yaml
-server:
-  port: 8000
-  address: 0.0.0.0
-
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/database_name
-    username: db_id
-    password: db_pw
-
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: false
-    properties:
-      hibernate:
-        format-sql: true
-
-  application:
-    name: KPSC-DLPC
-
-  devtools:
-    restart:
-      enabled: true
-
-admin:
-  username: admin_id
-  password: admin_pw
-
-jwt:
-  jwtkey: your_jwt_key
-
-domain:
-  domain: your_domain
-```
-
-🔒 **보안 권장 사항**  
-- 민감한 정보(`db_pw`, `jwtkey`, `admin_pw`)는 환경 변수로 추출하거나 `.env`, `application-prod.yml`로 분리하여 관리하세요.
-
----
-
-## ▶️ 실행 방법
-
-1. **의존성 설치 및 빌드**
-   ```bash
-   ./gradlew build
-   ```
-
-2. **MySQL DB 준비**
-   - `database_name` 생성
-   - 사용자 계정 및 권한 부여
-   - `application.yml`에 DB 정보 입력
-
-3. **서버 실행**
-   ```bash
-   ./gradlew bootRun
-   ```
-   또는 IDE에서 `KpscWargameApplication` 실행
-
-4. **웹 접속**
-   ```
-   http://localhost:8000
-   ```
-
----
-
-## 🌐 주요 페이지 URL
-
-| 경로 | 설명 |
-|------|------|
-| `/register` | 사용자 계정 등록 페이지 |
-| `/admin` | 관리자 대시보드 |
-| `/admin/requests` | 사용자 승인 요청 관리 |
-| `/admin/users` | 사용자 목록 및 관리 |
-| `/admin/vmlogs` | 사용자 VM 상태 관리 |
-| `/vm` | API Key 기반 VM 접속 |
-
----
-
-## 🧑‍💻 기여
-
-본 프로젝트는 **KPSC 내부 소속원 전용**으로 제작되었습니다.  
-기능 제안, 버그 리포트 등은 GitHub Issue를 통해 남겨주세요.
-
----
-
-## 📜 라이선스
-
-© 2025 [Sharon77770](https://github.com/Sharon77770)  
-본 소프트웨어는 KPSC 내 사용을 위해 제작되었으며, 외부 배포 시 라이선스 협의가 필요합니다.
+본 프로젝트는 **구름빵팀(team CloudBread)**이 북악스터디 학습용으로 개발하였습니다.
+기능 제안이나 버그 리포트 등은 GitHub Issue를 통해 남겨주세요.
